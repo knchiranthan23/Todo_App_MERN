@@ -5,6 +5,7 @@ export const TodoApp = () => {
     const [tasks, setTasks] = useState([])
     const [editid, setEditid] = useState(null)
     const [edittext, setEdittext] = useState('')
+
     const handleSumit =(e)=>{
       e.preventDefault();
       setTasks(prev=>[...prev,{
@@ -14,13 +15,16 @@ export const TodoApp = () => {
       }])
       setData('');
     }
+
     const deleteTasks = (del)=>{
       setTasks(tasks.filter((curr) => curr.id !== del.id));
     }
+
     const handleEdit = (ed)=>{
         setEditid(ed.id);
         setEdittext(ed.text)  
     }
+
     const handleSave = ()=>{
       setTasks(tasks.map(task=>task.id === editid
         ?{...task,text:edittext}
@@ -28,7 +32,11 @@ export const TodoApp = () => {
       ))
       setEditid(null)
       setEdittext("");
-    }
+  }
+
+  const handleComplete = (val)=>{
+     setTasks(tasks.map(obj=>obj.id === val.id ?{...obj,completed:!obj.completed}:obj))
+  }
     useEffect(() => {
     console.log(tasks);
      }, [tasks]);
@@ -58,7 +66,11 @@ export const TodoApp = () => {
                   </>
                 ):(
                 <>
-                <p className='font-medium text-m text-black'>{val.text}</p>
+                  <div>
+                    <input type="checkbox" checked={val.completed} onChange={()=>{handleComplete(val)}}/>
+                    <p className='font-medium text-m text-black'>{val.text}</p>
+                    <p className='text-sm font-semibold text-black'>{val.completed ? "Complete":"Incomplete"}</p>
+                  </div>
                   <div className=' px-5 py-3 flex items-start gap-4'>
                     <button onClick={()=>{handleEdit(val)}} className='bg-blue-900 rounded border-1 h-10 w-20 '>Edit</button>
                     <button onClick={()=>{deleteTasks(val)}} className='bg-red-800 px-6 rounded h-10 border-1 border-white'>Delete</button>
