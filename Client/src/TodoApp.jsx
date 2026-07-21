@@ -41,7 +41,7 @@ export const TodoApp = () => {
     console.log(tasks);
      }, [tasks]);
   return (
-    <div className='h-screen bg-black text-white'>
+    <div className='min-h-screen bg-black text-white'>
         <h1 className='text-6xl font-extrabold border-b-2 flex flex-col items-center'>TODO LIST</h1>
         <form onSubmit={handleSumit} className='p-5 flex flex-col items-center w-full'>
             <input className='p-3 border-2 mt-2 w-1/2' 
@@ -52,7 +52,10 @@ export const TodoApp = () => {
             />
             <button className='bg-green-700 rounded border-2 border-white px-7 py-3 mt-4'>Add</button>
         </form>
-        <div className='h-full p-5 flex flex-col items-center gap-5'>
+        <div className='min-h-screen p-5 flex flex-col items-center gap-5'>
+            <p className='text-white  text-3xl font-bold'>Tasks : {tasks.length}</p>
+            <p className='font-semibold text-xl'>Active :{tasks.filter(obj=>(obj.completed===false)).length}</p>
+            <p className='font-semibold text-xl'>Finished :{tasks.filter(obj=>(obj.completed===true)).length}</p>
             {tasks.map((val)=>{
                return <div key={val.id} className='h-25 w-1/2 rounded-2xl border-1 border-white bg-gray-300 p-5 flex justify-between'>
                 {editid === val.id?(
