@@ -26,3 +26,29 @@ exports.register = async(req,res)=>{
       user
    })
 }
+
+exports.login = async(req,res)=>{
+    const {email,password} = req.body;
+    if(!email || !password){
+       return res.status(400).json({
+          message:"All fields should exists"
+       })
+    }
+    const existsUser = await userModel.findOne({email});
+    if(!existsUser)
+    {
+        return res.status(400).json({
+            message : "Invalid Credentials"
+        })
+    }
+   const isMatch = await bcrypt.compare(password,existsUser.password)
+   if(!isMatch)
+   {
+     return res.status(400).json({
+        message:"wrong password"
+     })
+   }
+   return res.status(201).json({
+     message:"Login successfull"
+   })
+}
