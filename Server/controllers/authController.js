@@ -34,14 +34,14 @@ exports.login = async(req,res)=>{
           message:"All fields should exists"
        })
     }
-    const existsUser = await userModel.findOne({email});
-    if(!existsUser)
+    const user = await userModel.findOne({email});
+    if(!user)
     {
         return res.status(400).json({
             message : "Invalid Credentials"
         })
     }
-   const isMatch = await bcrypt.compare(password,existsUser.password)
+   const isMatch = await bcrypt.compare(password,user.password)
    if(!isMatch)
    {
      return res.status(400).json({
@@ -50,7 +50,7 @@ exports.login = async(req,res)=>{
    }
    const token = jwt.sign(
      {
-        _id:existsUser._id
+        _id:user._id
      },
      process.env.JWT_SECRET,
      {
@@ -59,6 +59,6 @@ exports.login = async(req,res)=>{
     return res.status(201).json({
         message : "user successfully login",
         token,
-        existsUser
+        user
     })
 }
