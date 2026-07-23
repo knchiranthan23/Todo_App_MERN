@@ -6,7 +6,10 @@ const app = express();
 app.use(express.json());
 
 const userRoutes = require("./routes/authRoutes");
+const userTodo = require("./routes/todoRoutes")
+
 app.use("/api/auth",userRoutes)
+app.use("/api/todo",userTodo);
 
 app.get("/",(req,res)=>{
     res.send("Hello Clients this from server side");
