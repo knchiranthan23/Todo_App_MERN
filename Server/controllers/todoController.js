@@ -43,17 +43,17 @@ exports.updateTodo = async(req,res)=>{
     const{title,completed}=req.body
     try{
           const todos = await userTodo.findOne({
-         _id:req.params.id,
-         user:req.user._id
+            _id:req.params.id,
+            user:req.user._id
         })
         if(!todos){
           return res.status(404).json({
             message: "Todo not found"
           })
         }
-       todos.title=title;
-       todos.completed=completed;
-       await todos.save()
+        todos.title=title;
+        todos.completed=completed;
+        await todos.save()
        return res.status(200).json({
           message :"Todo updated successfully",
        })
