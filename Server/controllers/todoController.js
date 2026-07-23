@@ -19,3 +19,48 @@ exports.createTodo = async(req,res)=>{
         })
     }
 }
+
+exports.getTodo = async(req,res)=>{
+   try{
+        const user_tasks =  await userTodo.find({
+         user:req.user._id
+      })
+     return res.status(200).json({
+       message:"Users tasks are found",
+       user_tasks
+     })
+  }
+  catch(error)
+  {
+       return res.status(500).json({
+            message : "Internal server error"
+        })
+  }
+}   
+
+exports.updateTodo = async(req,res)=>{
+    const{title,completed}=req.body
+    try{
+          const todos = await userTodo.findOne({
+         _id:req.params.id,
+         user:req.user._id
+        })
+        if(!todos){
+          return res.status(404).json({
+            message: "Todo not found"
+          })
+        }
+       todos.title=title;
+       todos.completed=completed;
+       await todos.save()
+       return res.status(200).json({
+          message :"Todos updated successfully",
+       })
+    }
+    catch(error)
+    {
+        return res.status(500).json({
+            message : "Internal server error"
+        })
+    }
+}
