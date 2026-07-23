@@ -1,4 +1,5 @@
 const userTodo = require("../models/todo");
+const { findOne } = require("../models/user");
 exports.createTodo = async(req,res)=>{
     const{title} = req.body;
     try{
@@ -54,12 +55,37 @@ exports.updateTodo = async(req,res)=>{
        todos.completed=completed;
        await todos.save()
        return res.status(200).json({
-          message :"Todos updated successfully",
+          message :"Todo updated successfully",
        })
     }
     catch(error)
     {
         return res.status(500).json({
+            message : "Internal server error"
+        })
+    }
+}
+
+exports.deleteTodo = async(req,res)=>{
+   try{
+        const todos = await userTodo.findOne({
+        _id : req.params.id,
+        user : req.user._id
+      })
+     if(!todos)
+     {
+       return res.status(404).json({
+          message : "Todo not found"
+       })
+     }
+     await todos.deleteOne()
+     return res.status(200).json({
+          message :"Todo deleted successfully",
+       })
+    }
+    catch(error)
+    {
+         return res.status(500).json({
             message : "Internal server error"
         })
     }
