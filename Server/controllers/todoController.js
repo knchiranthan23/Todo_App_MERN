@@ -51,8 +51,12 @@ exports.updateTodo = async(req,res)=>{
             message: "Todo not found"
           })
         }
-        todos.title=title;
-        todos.completed=completed;
+         if (title !== undefined) {
+           todos.title = title;
+          }
+        if (completed !== undefined) {
+            todos.completed = completed;
+          }
         await todos.save()
        return res.status(200).json({
           message :"Todo updated successfully",
@@ -60,6 +64,7 @@ exports.updateTodo = async(req,res)=>{
     }
     catch(error)
     {
+        console.log(error)
         return res.status(500).json({
             message : "Internal server error"
         })
