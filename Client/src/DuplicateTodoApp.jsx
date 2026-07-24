@@ -1,19 +1,10 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
-import api from "./api/api"
-export const TodoApp = () => {
+export const DuplicateTodoApp = () => {
     const [data, setData] = useState('');
     const [tasks, setTasks] = useState([])
     const [editid, setEditid] = useState(null)
     const [edittext, setEdittext] = useState('')
-
-    useEffect(()=>{
-       fetchTodos();
-    },[])
-    const fetchTodos = async()=>{
-      const response = await api.get("/todo");
-      setTasks(response.data.user_tasks)
-    }
 
     const handleSumit =(e)=>{
       e.preventDefault();
@@ -95,4 +86,4 @@ export const TodoApp = () => {
     </div>
   )
 }
-export default TodoApp;
+export default DuplicateTodoApp;
