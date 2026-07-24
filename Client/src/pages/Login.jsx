@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import api from "../api/api";
 
-const Register = () => {
+const Login = () => {
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
   });
@@ -19,35 +18,27 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const response = await api.post("/auth/register", formData);
+      const response = await api.post("/auth/login", formData);
+
+      localStorage.setItem("token", response.data.token);
 
       alert(response.data.message);
 
       setFormData({
-        name: "",
         email: "",
         password: "",
       });
+
     } catch (error) {
-      alert(error.response?.data?.message || "Registration Failed");
+      alert(error.response?.data?.message || "Login Failed");
     }
   };
 
   return (
     <div>
-      <h1>Register</h1>
+      <h1>Login</h1>
 
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Enter Name"
-          value={formData.name}
-          onChange={handleChange}
-        />
-
-        <br /><br />
-
         <input
           type="email"
           name="email"
@@ -68,10 +59,10 @@ const Register = () => {
 
         <br /><br />
 
-        <button type="submit">Register</button>
+        <button type="submit">Login</button>
       </form>
     </div>
   );
 };
 
-export default Register;
+export default Login;
